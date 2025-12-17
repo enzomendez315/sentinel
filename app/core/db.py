@@ -1,11 +1,9 @@
 from sqlmodel import create_engine, SQLModel
 
 from models import Endpoint
+from config import settings
 
-
-DATABASE_URL = ""
-
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(settings.DATABASE_URL, echo=True)
 
 # Create the actual database using the engine
 SQLModel.metadata.create_all(engine)
