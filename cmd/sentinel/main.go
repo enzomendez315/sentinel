@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "sentinel/internal/server"
 
+func main() {
+	server.Run()
 }
