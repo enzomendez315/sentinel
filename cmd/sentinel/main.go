@@ -1,6 +1,6 @@
 package main
 
-import "sentinel/internal/server"
+import "github.com/enzomendez315/sentinel/internal/server"
 
 func main() {
 	server.Run()
