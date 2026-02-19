@@ -1,10 +1,14 @@
 package main
 
-import "github.com/enzomendez315/sentinel/internal/server"
+import (
+	"fmt"
+
+	"github.com/enzomendez315/sentinel/internal/server"
+)
 
 func main() {
 	err := server.Run()
 	if err != nil {
-		return
+		fmt.Printf("Error starting server: %v", err)
 	}
 }
