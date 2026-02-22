@@ -1,14 +1,32 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"os"
 
-	"github.com/enzomendez315/sentinel/internal/server"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func main() {
-	err := server.Run()
+	//err := server.Run()
+	//if err != nil {
+	//	fmt.Printf("Error starting server: %v", err)
+	//}
+
+	dbpool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		fmt.Printf("Error starting server: %v", err)
+		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
+		os.Exit(1)
 	}
+	defer dbpool.Close()
+
+	var greeting string
+	err = dbpool.QueryRow(context.Background(), "select 'Hello, world!'").Scan(&greeting)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(greeting)
 }
