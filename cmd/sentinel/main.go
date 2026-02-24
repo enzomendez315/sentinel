@@ -1,32 +1,26 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/enzomendez315/sentinel/internal/db"
+	"github.com/enzomendez315/sentinel/internal/server"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	//err := server.Run()
-	//if err != nil {
-	//	fmt.Printf("Error starting server: %v", err)
-	//}
+	_ = godotenv.Load()
 
-	dbpool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+	databaseURL := os.Getenv("DATABASE_URL")
+	pool, err := db.Init(databaseURL)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
-	defer dbpool.Close()
+	defer pool.Close()
 
-	var greeting string
-	err = dbpool.QueryRow(context.Background(), "select 'Hello, world!'").Scan(&greeting)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
+	if err := server.Run(); err != nil {
+		fmt.Printf("Error starting server: %v", err)
 	}
-
-	fmt.Println(greeting)
 }
