@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/enzomendez315/sentinel/internal/endpoint"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func Run() error {
+func Run(p *pgxpool.Pool) error {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
@@ -30,10 +30,10 @@ func Run() error {
 			return
 		}
 
-		// Set fields
-		ep.ID = uuid.New().String()
-		ep.CreatedAt = time.Now()
-		ep.UpdatedAt = time.Now()
+		// TODO: Save to database and set timestamps
+		ep.ID, err = uuid.NewV7()
+		//ep.CreatedAt = time.Now()
+		//ep.UpdatedAt = time.Now()
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)

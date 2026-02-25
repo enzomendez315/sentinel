@@ -1,9 +1,13 @@
 package endpoint
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Endpoint struct {
-	ID        string    `json:"id"`
+	ID        uuid.UUID `json:"id"`
 	URL       string    `json:"url"`
 	Name      string    `json:"name"`
 	Enabled   bool      `json:"enabled"`

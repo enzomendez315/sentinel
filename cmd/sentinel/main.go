@@ -20,7 +20,7 @@ func main() {
 	}
 	defer pool.Close()
 
-	if err := server.Run(); err != nil {
+	if err := server.Run(pool); err != nil {
 		fmt.Printf("Error starting server: %v", err)
 	}
 }
