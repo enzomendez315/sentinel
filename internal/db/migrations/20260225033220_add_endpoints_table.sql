@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE TABLE endpoints(
     id uuid NOT NULL PRIMARY KEY,
-    url text NOT NULL,
+    url text NOT NULL UNIQUE,
     name text NOT NULL,
     enabled boolean NOT NULL DEFAULT true,
     created_at timestamptz NOT NULL DEFAULT now(),
